@@ -1,26 +1,27 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { DropDown } from './styles';
+import Dropdown from './components/DropDown';
 
 function App() {
+
+  const options = [
+    'First Option',
+    'Second Option',
+    'Third Option',
+    'Fourth Option',
+  ]
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <div className="container">
+      <div className="form-container">
+        <h1>Welcome to GeoCoding App</h1>
+        <form>
+        <input type="text" placeholder="Search the Place you wanna go..."></input>
+       <Dropdown options={options} />
+      </form></div>
+    </div>    
+  )
 }
 
 export default App;
