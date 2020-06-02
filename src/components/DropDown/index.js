@@ -3,16 +3,17 @@ import PropTypes from 'prop-types'
 import { WrapperDropDown } from "./styles"
 
 export default function Dropdown(props){
-    const {options} = props
+  const {options} = props
+  console.log(options)
     return (
         <WrapperDropDown>
-            <ul>{options.map(option => <li>{option}</li>)}</ul>
+           <ul>{options.map(option => <li key={option.formatted}>{option.formatted}</li>)}</ul>
         </WrapperDropDown>
     )
 }
 
 Dropdown.propTypes = {
-    options:PropTypes.arrayOf(String)
+    options:PropTypes.array
 }
 
 Dropdown.defaultProps = {
