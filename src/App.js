@@ -13,10 +13,6 @@ function App() {
   useEffect(()=> {
     // Search Place by Name
     const fetchData = async()=>{
-      console.log('this is the state')
-      console.log(searchedString)
-      console.log('This is the current ref')
-      console.log(inputRef)
       if(searchedString && searchedString === inputRef.current.value){
       const queryString = encodeURIComponent(searchedString)
       const response = await axios(API_BASE_URL+ SEARCH_BY_NAME_ENDPOINT + '?place_name=' + queryString)
