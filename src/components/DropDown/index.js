@@ -3,11 +3,10 @@ import PropTypes from 'prop-types'
 import { WrapperDropDown } from "./styles"
 
 export default function Dropdown(props){
-  const {options} = props
-  console.log(options)
+  const {options, onSelectOption} = props
     return (
         <WrapperDropDown>
-           <ul>{options.map(option => <li key={option}>{option}</li>)}</ul>
+           <ul>{options.map(option => <li key={option} onClick={()=>{onSelectOption(option)}}>{option}</li>)}</ul>
         </WrapperDropDown>
     )
 }

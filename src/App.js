@@ -1,59 +1,53 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import './App.css'
-import Dropdown from './components/DropDown'
-import { SEARCH_BY_NAME_ENDPOINT, API_BASE_URL } from './constants'
-import axios from 'axios'
 import FirstStep from './scenes/FirstStep'
+import SecondStep from './scenes/SecondStep'
+import ThirdStep from './scenes/ThirdStep'
 function App() {
 
-  const [options, setOptions] = useState([])
-  const [searchedString, setSearchedString] = useState('')
+  
   const [step, setStep] = useState(1)
   const [stepCompleted, setStepCompleted] = useState(false)
   const [userLocation, setUserLocation] = useState(null)
-  const inputRef = useRef()
+  const [userLocationName, setUserLocationName] = useState(null)
+  const [plaseSearched, setPlaceSearched] = useState(null)
 
-  useEffect(()=> {
-    // Search Place by Name
-    const fetchData = async()=>{
-      if(searchedString && searchedString === inputRef.current.value){
-      const queryString = encodeURIComponent(searchedString)
-      const response = await axios(API_BASE_URL+ SEARCH_BY_NAME_ENDPOINT + '?place_name=' + queryString)
-      const data = response.data
-      const {results} = data
-      console.log(results)
-      setOptions(results)
-      }
-    }
-    setTimeout(()=>{fetchData()}, 200)
-  }, [searchedString, inputRef])
+  
 
   useEffect(()=>{
-    if(!searchedString){
-      //clean results
-      setOptions([])
+    // validate steps
+    switch(step){
+      case 1:
+        // here we need to have the user location in order to go further
+        if(!userLocation){
+            setStepCompleted(false)
+        }else{
+            setStepCompleted(true)
+          }
+        break
+      case 2:
+        if(!setPlaceSearched){
+          setStepCompleted(false)
+        }         
+        else{
+          setStepCompleted(true)
+        }
+        break
+      default:
+        break
     }
-  }, [searchedString])
+    
 
-  const validateStep = () => {
-    if(step === 1){
-      // here we need to have the user location in order to go further
-      if(!userLocation){
-        setStepCompleted(false)
-      }
-    }    
-  }
+  }, [step, userLocation])
 
-
-  const renderSecondStep = ()=> (
-    <form>
-      <input ref={inputRef} type="text" placeholder="Search the Place you wanna go..." value={searchedString} onChange={(e)=>{setSearchedString(e.target.value)}}></input>
-      <Dropdown options={options} />
-    </form>
-  )
-
-  const renderResult = () => {
-
+  const goToNextStep = ()=>{
+    if(step < 3){
+      const nextStep = step + 1
+    setStep(nextStep)
+    }else{
+      setStep(1) // start again
+    }
+    
   }
   
   return (
@@ -61,12 +55,14 @@ function App() {
       <div className="form-container">
         <h1>Welcome to GeoCoding App</h1>
         <h1>Step {step}</h1>
-        {step === 1 && <FirstStep/>}
-        {step === 2 && renderSecondStep()}
-        {step === 2 && renderResult()}
-        <div className="button-next-container" disabled={!stepCompleted}><button className="next-Button">Next</button></div>
-    </div>    
-    </div>    
+        {step === 1 && <FirstStep onSetUserLocation={setUserLocation} onsetUserLocationName={setUserLocationName}/>}
+        {step === 2 && <SecondStep onSetPlaceSearched={setPlaceSearched} />}
+        {step === 3 && <ThirdStep startPlace={userLocation} startPlaceName={userLocationName} endPlace={plaseSearched}/>}
+        <div className="button-next-container">
+  <button className="next-Button"  disabled={!stepCompleted} onClick={goToNextStep}>{step < 3 ? 'Next' : 'Start Again'}</button>
+        </div>
+    </div>
+    </div>
   )
 
   }
