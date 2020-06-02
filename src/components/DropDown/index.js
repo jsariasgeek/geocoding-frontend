@@ -7,7 +7,7 @@ export default function Dropdown(props){
   console.log(options)
     return (
         <WrapperDropDown>
-           <ul>{options.map(option => <li key={option.formatted}>{option.formatted}</li>)}</ul>
+           <ul>{options.map(option => <li key={option}>{option}</li>)}</ul>
         </WrapperDropDown>
     )
 }
